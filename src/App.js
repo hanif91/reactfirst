@@ -1,26 +1,30 @@
+import React from "react";
+import { useEffect,useState } from "react"; 
 
-import React from 'react';
-import { Fragment } from "react";
-import User from "./components/User";
 
-const ValidPassword = () => <h1>Valid Password</h1>;
-const InvalidPassword = () => <h1>InValid Password</h1>;
-const Password = ({isValid}) => {
-  if (isValid) {
-    return <ValidPassword></ValidPassword>;
-  } else {
-    return  <InvalidPassword></InvalidPassword>;
-  };
-}
+function App () {
+  const [data,setData] = useState([])
 
-function App() {
-  return <Fragment>
-    {
-      <Password isValid={false}>
-      </Password>
+ 
+  useEffect( () =>{
+    async function getData () {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+      const data2 = await response.json()
+      if (data && data2.length) setData(data2)
     }
-  </Fragment> 
-   
-};
 
+    getData();
+  },[])
+  return (
+    <>
+      <ul>
+        {
+          data.map( item => (
+            <li key={Math.random()}>{item.title}</li>
+          ))
+        }
+      </ul>
+    </>
+  )
+}
 export default App;
